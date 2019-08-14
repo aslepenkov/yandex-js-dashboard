@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <!-- <ul id="example-1" v-for="results in data.completed">
-      {{results[0].player}}
-      <li v-for="result in results">{{ result.name }}</li>
-    </ul>-->
+
 
     <b-table striped hover :items="items"></b-table>
 
