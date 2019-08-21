@@ -1,27 +1,27 @@
 var path = require('path')
 var webpack = require('webpack')
+require("babel-polyfill");
+
 
 module.exports = {
-  entry: './src/main.js',
+  entry: ["babel-polyfill", './src/main.js'],
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: 'build.js'
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.css$/,
         use: [
           'vue-style-loader',
           'css-loader'
         ],
-      },      {
+      }, {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: {
-          }
+          loaders: {}
           // other vue-loader options go here
         }
       },
