@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <div v-if="loading">
-      <div class="lds-hourglass"></div>Loading... прокси медленный, ждать почти минуту :)
+      <div class="lds-hourglass"></div>Loading..
     </div>
     <b-table striped hover :items="items"></b-table>
+    <div class="auth">Diff Time в часах. Время в формате H:MM</div>
   </div>
 </template>
 
@@ -97,7 +98,7 @@ export default {
           if (run_count++ > 1) continue;
           let url =
             "https://cors-anywhere.herokuapp.com/" + //TODO own server
-            `www.codewars.com/api/v1/users/${player}/code-challenges/completed?access_key=${secret}`;
+            `www.codewars.com/api/v1/users/${player}/code-challenges/completed`;
 
           await axios
             .get(url)
@@ -148,7 +149,6 @@ export default {
 
         row._cellVariants = {};
         for (let slug of this.challengeSlugs) {
-          // row._cellVariants = { [String(slug)]: "info" };
           let timestr = this.results
             .filter(res => {
               return res.player === player && res.slug === slug;
@@ -177,21 +177,20 @@ export default {
               row[slug] = "+";
 
               if (fastestTime.getTime() === resultTime.getTime()) {
-                row._cellVariants[slug] = "success";                
+                row._cellVariants[slug] = "success";
               } else {
-                // row._cellVariants = { [String(slug)]: "warning" };
-                row.diffTime += Math.abs(
+                let diff = Math.abs(
                   resultTime.getTime() - fastestTime.getTime()
                 );
+
+                var seconds = diff / 1000;
+                var hours = parseInt(seconds / 3600);
+                seconds = seconds % 3600;
+                var minutes = parseInt(seconds / 60);
+
+                row.diffTime += Math.ceil(diff / 60000 / 60);
+                row[slug] = `+${hours}:${minutes}`;
               }
-              // row[slug] =
-              //   "+" +
-              //   Math.floor(
-              //     Math.abs(resultTime.getTime() - fastestTime.getTime()) /
-              //       60000 /
-              //       60
-              //   ) +
-              //   " hrs";
             } else {
               row[slug] = "-";
               row._cellVariants[slug] = "danger";
@@ -227,6 +226,10 @@ a {
   color: #42b983;
 }
 
+.auth {
+  font-size: 10;
+  color: silver;
+}
 .lds-hourglass {
   width: 30%;
   height: 30%;
