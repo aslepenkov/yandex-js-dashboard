@@ -146,7 +146,9 @@ export default {
         row.doneCount = 0;
         row.diffTime = 0;
 
+        row._cellVariants = {};
         for (let slug of this.challengeSlugs) {
+          // row._cellVariants = { [String(slug)]: "info" };
           let timestr = this.results
             .filter(res => {
               return res.player === player && res.slug === slug;
@@ -172,11 +174,12 @@ export default {
 
             if (resultTime instanceof Date && isFinite(resultTime)) {
               row.doneCount++;
+              row[slug] = "+";
+
               if (fastestTime.getTime() === resultTime.getTime()) {
-                row[slug] = "+";
-                //row._cellVariants = { [slug]: "success" };
+                row._cellVariants[slug] = "success";                
               } else {
-                row[slug] = "+";
+                // row._cellVariants = { [String(slug)]: "warning" };
                 row.diffTime += Math.abs(
                   resultTime.getTime() - fastestTime.getTime()
                 );
@@ -191,6 +194,7 @@ export default {
               //   " hrs";
             } else {
               row[slug] = "-";
+              row._cellVariants[slug] = "danger";
             }
           }
         }
