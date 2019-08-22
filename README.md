@@ -2,6 +2,8 @@
 
 > Yandex JS Course. CodeWars challenges board 2019
 
+![](images/tableview.png?raw=true)
+
 ## Build Setup
 
 ``` bash
@@ -14,5 +16,3 @@ npm run dev
 # build for production with minification
 npm run build
 ```
-
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
