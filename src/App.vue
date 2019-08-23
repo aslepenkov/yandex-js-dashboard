@@ -96,9 +96,9 @@ export default {
         let run_count = headersOnly ? 1 : -500; //magic number!
         for (let player of this.players) {
           if (run_count++ > 1) continue;
-          let url =
-            "https://cors-anywhere.herokuapp.com/" + //TODO own server
-            `www.codewars.com/api/v1/users/${player}/code-challenges/completed`;
+          let url = 
+          "https://cors-anywhere.herokuapp.com/" + //TODO own server
+          `www.codewars.com/api/v1/users/${player}/code-challenges/completed`;
 
           await axios
             .get(url)
@@ -153,7 +153,7 @@ export default {
             .filter(res => {
               return res.player === player && res.slug === slug;
             })
-            .map(s => s.completedAt)[0];
+            .map(s => s.completedAt).reverse()[0];
 
           if (!first) {
             let resultTime = new Date(timestr);
@@ -214,7 +214,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   color: #2c3e50;
-  
 }
 
 h1,
