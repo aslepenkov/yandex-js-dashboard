@@ -40,6 +40,7 @@ export default {
         return adoneCount < bdoneCount ? 1 : -1;
       }
     });
+    this.items.forEach(i => (i.diffTime = this.kFormatter(i.diffTime)));
   },
   methods: {
     async getPlayersDataAsync() {
@@ -96,9 +97,8 @@ export default {
         let run_count = headersOnly ? 1 : -500; //magic number!
         for (let player of this.players) {
           if (run_count++ > 1) continue;
-          let url = 
-          "https://cors-anywhere.herokuapp.com/" + //TODO own server
-          `www.codewars.com/api/v1/users/${player}/code-challenges/completed`;
+          let url = "https://cors-anywhere.herokuapp.com/" + //TODO own server
+           `www.codewars.com/api/v1/users/${player}/code-challenges/completed`;
 
           await axios
             .get(url)
@@ -107,7 +107,7 @@ export default {
                 val["player"] = player;
                 val["time"] = val.completedAt;
 
-                if (this.challengeSlugs.includes(val.slug)) {
+                if (this.challengeSlugs.map(s => s.name).includes(val.slug)) {
                   data.push({
                     player: player,
                     slug: val.slug,
@@ -136,6 +136,11 @@ export default {
         console.log(error);
       }
     },
+    kFormatter(num) {
+      return Math.abs(num) > 999
+        ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+        : Math.sign(num) * Math.abs(num);
+    },
     async fetchTableData(first) {
       this.players = await this.getPlayersDataAsync();
       this.challengeSlugs = await this.getSlugsDataAsync();
@@ -148,16 +153,22 @@ export default {
         row.diffTime = 0;
 
         row._cellVariants = {};
-        for (let slug of this.challengeSlugs) {
+        for (let slugObj of this.challengeSlugs) {
+          let slug = slugObj.name;
+          let expiryDate = slugObj.expiryDate;
+          let startDate = slugObj.startDate;
+
           let timestr = this.results
             .filter(res => {
               return res.player === player && res.slug === slug;
             })
-            .map(s => s.completedAt).reverse()[0];
+            .map(s => s.completedAt)
+            .reverse()[0];
 
           if (!first) {
-            let resultTime = new Date(timestr);
+            let comletedTime = new Date(timestr);
 
+            let resultTime = new Date(expiryDate) - comletedTime; //new Date(timestr);
             let fastestTime = this.results
               .filter(res => {
                 return res.slug === slug;
@@ -172,24 +183,35 @@ export default {
                 return 0;
               })[0];
 
-            if (resultTime instanceof Date && isFinite(resultTime)) {
+            if (resultTime) {
               row.doneCount++;
               row[slug] = "+";
 
-              if (fastestTime.getTime() === resultTime.getTime()) {
+              let diff = Math.abs(
+                comletedTime.getTime() - fastestTime.getTime()
+              );
+              let maxDiff = 12096e5; //two weeks
+
+              if (diff > maxDiff) {
+                diff = Math.abs(
+                  comletedTime.getTime() - new Date(startDate).getTime()
+                );
+              }
+
+              var seconds = diff / 1000;
+              var hours = parseInt(seconds / 3600);
+              seconds = seconds % 3600;
+              var minutes = parseInt(seconds / 60);
+
+              if (fastestTime.getTime() === comletedTime.getTime()) {
                 row._cellVariants[slug] = "success";
               } else {
-                let diff = Math.abs(
-                  resultTime.getTime() - fastestTime.getTime()
-                );
-
-                var seconds = diff / 1000;
-                var hours = parseInt(seconds / 3600);
-                seconds = seconds % 3600;
-                var minutes = parseInt(seconds / 60);
-
                 row.diffTime += Math.ceil(diff / 60000 / 60);
                 row[slug] = `+${hours}:${minutes}`;
+              }
+
+              if (resultTime < 0) {
+                row._cellVariants[slug] = "warning";
               }
             } else {
               row[slug] = "-";
@@ -210,6 +232,7 @@ export default {
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-size: small;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
