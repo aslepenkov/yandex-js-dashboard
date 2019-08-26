@@ -4,7 +4,7 @@
 
 ![](images/tableview.png?raw=true)
 
-## Build Setup
+## Build  Setup
 
 ``` bash
 # install dependencies
