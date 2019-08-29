@@ -8,14 +8,9 @@
         <b-row class="mb-10">
           <b-col>
             <div>
-              <!-- <span style="color:#e00">{{ row.item.playerName.nick.charAt(0) }}</span>{{ row.item.playerName.nick.substring(1) }}
-              -->
               <b>
                 <span>
-                  <div
-                    style="color:#e00; display:table-cell"
-                  >{{ row.item.playerName.nick.charAt(0) }}</div>
-                  <div style="display:table-cell">{{ row.item.playerName.nick.substring(1) }}</div>
+                  <div id="nickname">{{ row.item.playerName.nick }}</div>
                 </span>
               </b>
             </div>
@@ -48,7 +43,7 @@ export default {
   name: "app",
   data() {
     return {
-      stick: "100%",
+      stick: "100vh",
       results: [],
       items: [],
       loading: true,
@@ -356,5 +351,8 @@ a {
   100% {
     transform: rotate(1800deg);
   }
+}
+#nickname::first-letter {
+  color: #e00;
 }
 </style>
