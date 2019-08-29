@@ -3,19 +3,36 @@
     <div v-if="loading">
       <div class="lds-hourglass"></div>Loading..
     </div>
-    <b-table striped hover :items="items">
+    <b-table responsive striped hover :sticky-header="stick" :items="items" :fields="fields">
       <template slot="[playerName]" slot-scope="row">
         <b-row class="mb-10">
           <b-col>
-            <b>
-              <div>
-                <span style="color:#e00">{{ row.item.playerName.nick.charAt(0) }}</span>{{ row.item.playerName.nick.substring(1) }}
-              </div>
-            </b>
+            <div>
+              <!-- <span style="color:#e00">{{ row.item.playerName.nick.charAt(0) }}</span>{{ row.item.playerName.nick.substring(1) }}
+              -->
+              <b>
+                <span>
+                  <div
+                    style="color:#e00; display:table-cell"
+                  >{{ row.item.playerName.nick.charAt(0) }}</div>
+                  <div style="display:table-cell">{{ row.item.playerName.nick.substring(1) }}</div>
+                </span>
+              </b>
+            </div>
           </b-col>
         </b-row>
         <b-row class="mb-10">
           <b-col class="text-muted">{{ row.item.playerName.real }}</b-col>
+        </b-row>
+      </template>
+
+      <template slot="[doneCount]" slot-scope="row">
+        <b-row class="mb-10">
+          <b-col>
+            <div>
+              <span>{{ row.item.doneCount.done}}/{{ row.item.doneCount.max }}</span>
+            </div>
+          </b-col>
         </b-row>
       </template>
     </b-table>
@@ -31,20 +48,42 @@ export default {
   name: "app",
   data() {
     return {
+      stick: "100%",
       results: [],
       items: [],
       loading: true,
       players: [],
       challengeSlugs: [],
-      herokuappFail: false
+      herokuappFail: false,
+      fields: [
+        {
+          key: "playerName",
+          label: "Участник",
+          stickyColumn: true,
+          sortable: true,
+          sortDirection: "desc"
+        },
+        {
+          key: "doneCount",
+          label: "Решено задач",
+          sortable: true,
+          sortDirection: "desc"
+        },
+        {
+          key: "diffTime",
+          label: "Время"
+        }
+      ]
     };
   },
   async beforeMount() {
     axios
       .get(config.itemsEndpoint)
+      // .get("http://localhost:8000/api/items")
       .then(resp => {
         this.loading = false;
         this.items = resp.data;
+        this.fields.push(...Object.keys(this.items[0]).slice(4));
       })
       .catch(error => {
         this.herokuappFail = true;
@@ -63,8 +102,8 @@ export default {
     if (this.herokuappFail) {
       await this.fetchTableData();
       this.items.sort(function(a, b) {
-        var adoneCount = a.doneCount;
-        var bdoneCount = b.doneCount;
+        var adoneCount = a.doneCount.done;
+        var bdoneCount = b.doneCount.done;
         var aLow = a.diffTime;
         var bLow = b.diffTime;
         if (adoneCount === bdoneCount) {
@@ -249,7 +288,10 @@ export default {
             }
           }
         }
-
+        row.doneCount = {
+          done: row.doneCount,
+          max: this.challengeSlugs.length
+        };
         return row;
       });
 
