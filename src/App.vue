@@ -6,9 +6,11 @@
     <b-table striped hover :items="items">
       <template slot="[playerName]" slot-scope="row">
         <b-row class="mb-10">
-          <b-col>            
+          <b-col>
             <b>
-              <div><span style="color:#e00">{{ row.item.playerName.nick.charAt(0) }}</span>{{ row.item.playerName.nick.substring(1) }}</div>
+              <div>
+                <span style="color:#e00">{{ row.item.playerName.nick.charAt(0) }}</span>{{ row.item.playerName.nick.substring(1) }}
+              </div>
             </b>
           </b-col>
         </b-row>
@@ -28,34 +30,51 @@ import config from "./../config.js";
 export default {
   name: "app",
   data() {
-    return {        
+    return {
       results: [],
       items: [],
       loading: true,
       players: [],
       challengeSlugs: [],
-     
+      herokuappFail: false
     };
   },
   async beforeMount() {
-    await this.fetchTableData(true);
+    axios
+      .get(config.itemsEndpoint)
+      .then(resp => {
+        this.loading = false;
+        this.items = resp.data;
+      })
+      .catch(error => {
+        this.herokuappFail = true;
+        console.log(error);
+      });
+
+    console.log(" /\\_/\\");
+    console.log("( o.o )");
+    console.log(" > ^ <");
+
+    if (this.herokuappFail) {
+      await this.fetchTableData(true);
+    }
   },
   async created() {
-    await this.fetchTableData();
-
-    this.items.sort(function(a, b) {
-      var adoneCount = a.doneCount;
-      var bdoneCount = b.doneCount;
-      var aLow = a.diffTime;
-      var bLow = b.diffTime;
-
-      if (adoneCount === bdoneCount) {
-        return aLow < bLow ? -1 : aLow > bLow ? 1 : 0;
-      } else {
-        return adoneCount < bdoneCount ? 1 : -1;
-      }
-    });
-    this.items.forEach(i => (i.diffTime = this.kFormatter(i.diffTime)));
+    if (this.herokuappFail) {
+      await this.fetchTableData();
+      this.items.sort(function(a, b) {
+        var adoneCount = a.doneCount;
+        var bdoneCount = b.doneCount;
+        var aLow = a.diffTime;
+        var bLow = b.diffTime;
+        if (adoneCount === bdoneCount) {
+          return aLow < bLow ? -1 : aLow > bLow ? 1 : 0;
+        } else {
+          return adoneCount < bdoneCount ? 1 : -1;
+        }
+      });
+      this.items.forEach(i => (i.diffTime = this.kFormatter(i.diffTime)));
+    }
   },
   methods: {
     async getPlayersDataAsync() {
