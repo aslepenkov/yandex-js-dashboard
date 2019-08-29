@@ -1,6 +1,7 @@
 .DS_Store
 node_modules/
 dist/
+.vscode/
 npm-debug.log
 yarn-error.log
 .firebase/
@@ -17,3 +18,4 @@ yarn-error.log
 testfirebase/hosting..cache
 testfirebase/hosting.ZGlzdA.cache
 .env.local
+images/tableview.png
