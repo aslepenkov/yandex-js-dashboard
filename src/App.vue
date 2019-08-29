@@ -6,8 +6,10 @@
     <b-table striped hover :items="items">
       <template slot="[playerName]" slot-scope="row">
         <b-row class="mb-10">
-          <b-col>
-            <b>{{ row.item.playerName.nick }}</b>
+          <b-col>            
+            <b>
+              <div><span style="color:#e00">{{ row.item.playerName.nick.charAt(0) }}</span>{{ row.item.playerName.nick.substring(1) }}</div>
+            </b>
           </b-col>
         </b-row>
         <b-row class="mb-10">
@@ -26,12 +28,13 @@ import config from "./../config.js";
 export default {
   name: "app",
   data() {
-    return {
+    return {        
       results: [],
       items: [],
       loading: true,
       players: [],
-      challengeSlugs: []
+      challengeSlugs: [],
+     
     };
   },
   async beforeMount() {
@@ -73,7 +76,7 @@ export default {
             console.log(error);
           });
 
-         return data;       
+        return data;
       } catch (error) {
         console.log(error);
       }
