@@ -2,7 +2,7 @@
 
 > Yandex JS Course. CodeWars challenges board 2019
 
-![](images/tableview.png?raw=true)
+![](images/table.png?raw=true)
 
 ## Build  Setup
         
