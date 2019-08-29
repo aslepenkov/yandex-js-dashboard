@@ -16,3 +16,4 @@ yarn-error.log
 .firebase/hosting.ZGlzdA.cache
 testfirebase/hosting..cache
 testfirebase/hosting.ZGlzdA.cache
+.env.local

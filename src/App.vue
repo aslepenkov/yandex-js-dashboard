@@ -3,13 +3,25 @@
     <div v-if="loading">
       <div class="lds-hourglass"></div>Loading..
     </div>
-    <b-table striped hover :items="items"></b-table>
+    <b-table striped hover :items="items">
+      <template slot="[playerName]" slot-scope="row">
+        <b-row class="mb-10">
+          <b-col>
+            <b>{{ row.item.playerName.nick }}</b>
+          </b-col>
+        </b-row>
+        <b-row class="mb-10">
+          <b-col class="text-muted">{{ row.item.playerName.real }}</b-col>
+        </b-row>
+      </template>
+    </b-table>
     <div class="auth">Diff Time в часах. Время в формате H:MM</div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import config from "./../config.js";
 
 export default {
   name: "app",
@@ -47,9 +59,7 @@ export default {
       try {
         let data = [];
         //load players
-        let playersUrl =
-          "https://yandex-js-dashboard-api.firebaseapp.com/players";
-        //"https://private-8fa4d2-xtstat.apiary-mock.com/players";
+        let playersUrl = config.playersRealEndpoint;
 
         await axios
           .get(playersUrl)
@@ -63,7 +73,7 @@ export default {
             console.log(error);
           });
 
-        return data;
+         return data;       
       } catch (error) {
         console.log(error);
       }
@@ -72,7 +82,7 @@ export default {
       try {
         let data = [];
         //load challenges
-        let slugsUrl = "https://yandex-js-dashboard-api.firebaseapp.com/slugs";
+        let slugsUrl = config.slugsEndpoint;
         await axios
           .get(slugsUrl)
           .then(response => {
@@ -95,18 +105,15 @@ export default {
         let data = [];
         let secret = "WbsyyvpERFjV9csHcv_7";
         let run_count = headersOnly ? 1 : -500; //magic number!
-        for (let player of this.players) {
+        for (let p of this.players) {
+          let player = p.nick;
           if (run_count++ > 1) continue;
-          let url = "https://cors-anywhere.herokuapp.com/" + //TODO own server
-           `www.codewars.com/api/v1/users/${player}/code-challenges/completed`;
+          let url = `${config.resultsEndpoint}${player}`;
 
           await axios
             .get(url)
             .then(response => {
               response.data.data.map(val => {
-                val["player"] = player;
-                val["time"] = val.completedAt;
-
                 if (this.challengeSlugs.map(s => s.name).includes(val.slug)) {
                   data.push({
                     player: player,
@@ -146,9 +153,10 @@ export default {
       this.challengeSlugs = await this.getSlugsDataAsync();
       this.results = await this.getResultsAsync(first);
 
-      this.items = await this.players.map(player => {
+      this.items = await this.players.map(p => {
         let row = {};
-        row.playerName = player;
+        let player = p.nick;
+        row.playerName = p;
         row.doneCount = 0;
         row.diffTime = 0;
 
