@@ -5,6 +5,7 @@
 
 ![](images/table.png?raw=true)
 
+### Hosted on: https://yandex-js-dashboard.netlify.com ###
 
 ## Build Setup
 
