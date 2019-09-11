@@ -1,5 +1,6 @@
 # yandex-js-dashboard
-
+[![CircleCI](https://circleci.com/gh/aslepenkov/yandex-js-dashboard.svg?style=svg)](https://circleci.com/gh/aslepenkov/yandex-js-dashboard)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/268b343a-da84-47b3-8cc9-2b258182cc13/deploy-status)](https://app.netlify.com/sites/yandex-js-dashboard/deploys)
 > Yandex JS Course. CodeWars challenges board 2019
 
 ![](images/table.png?raw=true)
