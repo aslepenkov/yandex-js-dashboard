@@ -3,10 +3,19 @@
     <div v-if="loading">
       <div class="lds-hourglass"></div>Loading..
     </div>
-    <b-table responsive striped hover :sticky-header="stick" :items="items" :fields="fields">
+    <b-table small responsive striped hover :sticky-header="stick" :items="items" :fields="fields">
+
+      <template slot="[N]" slot-scope="data" >
+        <b-row class="mb-10">
+         <b-col  > 
+           {{data.index+1}}
+        </b-col>
+         </b-row>
+      </template>
+
       <template slot="[playerName]" slot-scope="row">
         <b-row class="mb-10">
-          <b-col>
+          <b-col  > 
             <div>
               <b>
                 <span>
@@ -43,7 +52,7 @@ export default {
   name: "app",
   data() {
     return {
-      stick: "100vh",
+      stick: "100%",
       results: [],
       items: [],
       loading: true,
@@ -52,6 +61,11 @@ export default {
       herokuappFail: false,
       fields: [
         {
+          key: "N",
+          label: "N",
+          stickyColumn: true
+        },
+        {         
           key: "playerName",
           label: "Участник",
           stickyColumn: true,
