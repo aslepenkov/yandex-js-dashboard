@@ -1,21 +1,24 @@
 .DS_Store
-node_modules/
-dist/
-.vscode/
-npm-debug.log
-yarn-error.log
-.firebase/
-.firebaserc
+node_modules
+/dist
+
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Editor directories and files
 .idea
+.vscode
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-.firebase/hosting..cache
-.firebase/hosting.ZGlzdA.cache
-testfirebase/hosting..cache
-testfirebase/hosting.ZGlzdA.cache
-.env.local
-images/tableview.png
+*.sw?

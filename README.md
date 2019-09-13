@@ -1,81 +1,34 @@
-# yandex-js-dashboard
-[![CircleCI](https://circleci.com/gh/aslepenkov/yandex-js-dashboard.svg?style=svg)](https://circleci.com/gh/aslepenkov/yandex-js-dashboard)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/268b343a-da84-47b3-8cc9-2b258182cc13/deploy-status)](https://app.netlify.com/sites/yandex-js-dashboard/deploys)
-> Yandex JS Course. CodeWars challenges board 2019
+# codewars-dashboard
 
-![](images/table.png?raw=true)
-
-### Hosted on: https://yandex-js-dashboard.netlify.com ###
-
-## Build Setup
-
-```bash
-
-# install dependencies
+## Project setup
+```
 npm install
+```
 
-# serve with hot reload at localhost:8080
-npm run dev
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-# build for production with minification
+### Compiles and minifies for production
+```
 npm run build
 ```
-config
-```javascript
-module.exports = {
-  playersEndpoint: "https://yandex-js-dashboard-api.firebaseapp.com/players",
-  playersRealEndpoint:
-    "https://yandex-js-dashboard-api.firebaseapp.com/playersReal",
-  slugsEndpoint: "https://yandex-js-dashboard-api.firebaseapp.com/slugs",
-  resultsEndpoint:
-    "https://j3300l2mej.execute-api.eu-west-1.amazonaws.com/dev/",
-  itemsEndpoint: "https://cleverpack.herokuapp.com/api/items"
-};
+
+### Run your tests
+```
+npm run test
 ```
 
-## playersRealEndpoint ## 
-
-```json
-{
-  "data": [
-    {
-      "real": "Алексей Слепенков",
-      "nick": "4slepenkov"
-    }
-  ]
-}
+### Lints and fixes files
+```
+npm run lint
 ```
 
-## slugsEndpoint ##
-```json
-{
-  "data": [
-    {
-      "name": "how-good-are-you-really",
-      "expiryDate": "Wed, 14 Aug 2019 19:00:00 GMT+0700",
-      "startDate": "Wed, 31 Jul 2019 19:00:00 GMT+0700"
-    }
-  ]
-}
+### Run your end-to-end tests
 ```
-## resultsEndpoint ##
+npm run test:e2e
+```
 
-```json
-[   
-    {
-        "playerName": {
-            "real": "Алексей Слепенков",
-            "nick": "4slepenkov"
-        },
-        "doneCount": {
-            "done": 22,
-            "max": 22
-        },
-        "diffTime": "2.5k",
-        "_cellVariants": {
-            "lazy-repeater": "success"
-        },
-        "how-good-are-you-really": "+135:32",
-    }
-]
-```
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
