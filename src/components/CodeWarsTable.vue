@@ -42,31 +42,31 @@
 </template>
 
 <script>
-import axios from "axios";
-import config from "./../config.js";
+import axios from 'axios';
+import config from '../config.js';
 
 export default {
-  name: "CodeWarsTable",
+  name: 'CodeWarsTable',
   async beforeMount() {
     axios
       .get(config.itemsEndpoint)
-      //.get('http://localhost:8000/api/items')
-      .then(resp => {
+      // .get('http://localhost:8000/api/items')
+      .then((resp) => {
         this.loading = false;
         this.items = resp.data;
         this.fields.push(...Object.keys(this.items[0]).slice(4));
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
-    console.log(" /\\_/\\");
-    console.log("( o.o )");
-    console.log(" > ^ <");
+    console.log(' /\\_/\\');
+    console.log('( o.o )');
+    console.log(' > ^ <');
   },
   data() {
     return {
-      stick: "100%",
+      stick: '100%',
       results: [],
       items: [],
       loading: true,
@@ -75,30 +75,30 @@ export default {
       herokuappFail: false,
       fields: [
         {
-          key: "N",
-          label: "N",
-          stickyColumn: true
+          key: 'N',
+          label: 'N',
+          stickyColumn: true,
         },
         {
-          key: "playerName",
-          label: "Участник",
+          key: 'playerName',
+          label: 'Участник',
           stickyColumn: true,
           sortable: true,
-          sortDirection: "desc"
+          sortDirection: 'desc',
         },
         {
-          key: "doneCount",
-          label: "Решено задач",
+          key: 'doneCount',
+          label: 'Решено задач',
           sortable: true,
-          sortDirection: "desc"
+          sortDirection: 'desc',
         },
         {
-          key: "diffTime",
-          label: "Время"
-        }
-      ]
+          key: 'diffTime',
+          label: 'Время',
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 
