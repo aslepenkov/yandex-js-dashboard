@@ -1,34 +1,45 @@
-# codewars-dashboard
+# yandex-js-dashboard
 
-## Project setup
+[![CircleCI](https://circleci.com/gh/aslepenkov/yandex-js-dashboard.svg?style=svg)](https://circleci.com/gh/aslepenkov/yandex-js-dashboard)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/268b343a-da84-47b3-8cc9-2b258182cc13/deploy-status)](https://app.netlify.com/sites/yandex-js-dashboard/deploys)
+
+> CodeWars results board. Yandex JS Course 2019
+
+![](images/table.png?raw=true)
+
+### Hosted on: https://yandex-js-dashboard.netlify.com
+
+## Config (Custom Team/Custom Slugs)
+
+- Run your server (https://github.com/aslepenkov/codewars-results-server)
+- Set endpoint: config.js
+
+```javascript
+module.exports = {
+  itemsEndpoint: "https://cleverpack.herokuapp.com/api/items"
+};
 ```
+
+## Build Setup
+
+```bash
+
+# install dependencies
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
+# serve with hot reload at localhost:8080
 npm run serve
-```
 
-### Compiles and minifies for production
-```
+# build for production with minification
 npm run build
-```
 
-### Run your tests
-```
+# Run tests
 npm run test
-```
 
-### Lints and fixes files
-```
+# Lint and fix files
 npm run lint
-```
 
-### Run your end-to-end tests
-```
+# Run  end-to-end tests
 npm run test:e2e
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```
