@@ -1,10 +1,24 @@
 # yandex-js-dashboard
+
 [![CircleCI](https://circleci.com/gh/aslepenkov/yandex-js-dashboard.svg?style=svg)](https://circleci.com/gh/aslepenkov/yandex-js-dashboard)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/268b343a-da84-47b3-8cc9-2b258182cc13/deploy-status)](https://app.netlify.com/sites/yandex-js-dashboard/deploys)
-> Yandex JS Course. CodeWars challenges board 2019
+
+> CodeWars results board. Yandex JS Course 2019
 
 ![](images/table.png?raw=true)
 
+### Hosted on: https://yandex-js-dashboard.netlify.com
+
+## Config (Custom Team/Custom Slugs)
+
+- Run your server (https://github.com/aslepenkov/codewars-results-server)
+- Set endpoint: config.js
+
+```javascript
+module.exports = {
+  itemsEndpoint: "https://cleverpack.herokuapp.com/api/items"
+};
+```
 
 ## Build Setup
 
@@ -14,67 +28,18 @@
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run serve
 
 # build for production with minification
 npm run build
-```
-config
-```javascript
-module.exports = {
-  playersEndpoint: "https://yandex-js-dashboard-api.firebaseapp.com/players",
-  playersRealEndpoint:
-    "https://yandex-js-dashboard-api.firebaseapp.com/playersReal",
-  slugsEndpoint: "https://yandex-js-dashboard-api.firebaseapp.com/slugs",
-  resultsEndpoint:
-    "https://j3300l2mej.execute-api.eu-west-1.amazonaws.com/dev/",
-  itemsEndpoint: "https://cleverpack.herokuapp.com/api/items"
-};
-```
 
-## playersRealEndpoint ## 
+# Run tests
+npm run test
 
-```json
-{
-  "data": [
-    {
-      "real": "Алексей Слепенков",
-      "nick": "4slepenkov"
-    }
-  ]
-}
-```
+# Lint and fix files
+npm run lint
 
-## slugsEndpoint ##
-```json
-{
-  "data": [
-    {
-      "name": "how-good-are-you-really",
-      "expiryDate": "Wed, 14 Aug 2019 19:00:00 GMT+0700",
-      "startDate": "Wed, 31 Jul 2019 19:00:00 GMT+0700"
-    }
-  ]
-}
-```
-## resultsEndpoint ##
+# Run  end-to-end tests
+npm run test:e2e
 
-```json
-[   
-    {
-        "playerName": {
-            "real": "Алексей Слепенков",
-            "nick": "4slepenkov"
-        },
-        "doneCount": {
-            "done": 22,
-            "max": 22
-        },
-        "diffTime": "2.5k",
-        "_cellVariants": {
-            "lazy-repeater": "success"
-        },
-        "how-good-are-you-really": "+135:32",
-    }
-]
 ```
