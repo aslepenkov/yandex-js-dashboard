@@ -1,16 +1,16 @@
 <template>
-  <div id="CodeWarsTable">
+  <div id="app">
     <div v-if="loading">
       <div class="lds-hourglass"></div>Loading..
     </div>
-    <b-table small responsive striped hover :sticky-header="stick" :fields="fields" :items="items">
-      <template v-slot:[N] v-slot-scope:data>
+    <b-table small responsive striped hover :sticky-header="stick" :items="items" :fields="fields">
+      <template v-slot:cell(N)="data">
         <b-row class="mb-10">
           <b-col>{{data.index+1}}</b-col>
         </b-row>
       </template>
 
-      <template v-slot:playerName v-slot-scope:row>
+      <template v-slot:cell(playerName)="row">
         <b-row class="mb-10">
           <b-col>
             <div>
@@ -27,7 +27,7 @@
         </b-row>
       </template>
 
-      <template slot="[doneCount]" slot-scope="row">
+      <template v-slot:cell(doneCount)="row">
         <b-row class="mb-10">
           <b-col>
             <div>
@@ -50,7 +50,7 @@ export default {
   async beforeMount() {
     axios
       .get(config.itemsEndpoint)
-      //.get("http://localhost:8000/api/items")
+      //.get('http://localhost:8000/api/items')
       .then(resp => {
         this.loading = false;
         this.items = resp.data;
@@ -66,6 +66,13 @@ export default {
   },
   data() {
     return {
+      stick: "100%",
+      results: [],
+      items: [],
+      loading: true,
+      players: [],
+      challengeSlugs: [],
+      herokuappFail: false,
       fields: [
         {
           key: "N",
@@ -89,13 +96,7 @@ export default {
           key: "diffTime",
           label: "Время"
         }
-      ],
-      stick: "100%",
-      results: [],
-      items: [],
-      loading: true,
-      players: [],
-      challengeSlugs: []
+      ]
     };
   }
 };

@@ -5,15 +5,13 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import CodeWarsTable from "./components/CodeWarsTable.vue";
+import CodeWarsTable from './components/CodeWarsTable.vue';
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
-    HelloWorld,
-    CodeWarsTable
-  }
+    CodeWarsTable,
+  },
 };
 </script>
 
