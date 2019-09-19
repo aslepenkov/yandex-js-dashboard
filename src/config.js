@@ -1,3 +1,3 @@
 module.exports = {
-  itemsEndpoint: 'https://cleverpack.herokuapp.com/api/items',
+  itemsEndpoint: 'https://codewars-results-server.herokuapp.com/api/items',
 };
