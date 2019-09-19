@@ -3,7 +3,46 @@
     <div v-if="loading">
       <div class="lds-hourglass"></div>Loading..
     </div>
-    <b-table small responsive striped hover :sticky-header="stick" :items="items" :fields="fields">
+
+    <b-container fluid>
+      <!-- User Interface controls -->
+      <b-row>
+        <b-col lg="6" class="my-1">
+          <b-form-group
+            label="Filter"
+            label-cols-sm="3"
+            label-align-sm="right"
+            label-size="sm"
+            label-for="filterInput"
+            class="mb-0"
+          >
+            <b-input-group size="sm">
+              <b-form-input
+                v-model="filter"
+                type="search"
+                id="filterInput"
+                placeholder="Ник или Имя участника"
+              ></b-form-input>
+              <b-input-group-append>
+                <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+      </b-row>
+    </b-container>
+    <b-table
+      small
+      responsive
+      striped
+      hover
+      :sticky-header="stick"
+      :items="items"
+      :fields="fields"
+      :filter="filter"
+      :filterIncludedFields="filterOn"
+      @filtered="onFiltered"
+    >
       <template v-slot:cell(N)="data">
         <b-row class="mb-10">
           <b-col>{{data.index+1}}</b-col>
@@ -37,36 +76,58 @@
         </b-row>
       </template>
     </b-table>
+
     <div class="auth">Diff Time в часах. Время в формате H:MM</div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import config from '../config.js';
+import axios from "axios";
+import config from "../config.js";
 
 export default {
-  name: 'CodeWarsTable',
+  name: "CodeWarsTable",
+  computed: {},
+  mounted() {},
+  methods: {
+    info(item, index, button) {
+      this.infoModal.title = `Row index: ${index}`;
+      this.infoModal.content = JSON.stringify(item, null, 2);
+      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+    },
+
+    onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+    }
+  },
   async beforeMount() {
     axios
       .get(config.itemsEndpoint)
       // .get('http://localhost:8000/api/items')
-      .then((resp) => {
+      .then(resp => {
         this.loading = false;
         this.items = resp.data;
         this.fields.push(...Object.keys(this.items[0]).slice(4));
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
-    console.log(' /\\_/\\');
-    console.log('( o.o )');
-    console.log(' > ^ <');
+    console.log(" /\\_/\\");
+    console.log("( o.o )");
+    console.log(" > ^ <");
   },
   data() {
     return {
-      stick: '100%',
+      filter: null,
+      filterOn: [],
+      infoModal: {
+        id: "info-modal",
+        title: "",
+        content: ""
+      },
+      //NEW
+      stick: "100%",
       results: [],
       items: [],
       loading: true,
@@ -75,30 +136,31 @@ export default {
       herokuappFail: false,
       fields: [
         {
-          key: 'N',
-          label: 'N',
+          key: "N",
+          label: "N",
           stickyColumn: true,
+          sortable: false
         },
         {
-          key: 'playerName',
-          label: 'Участник',
+          key: "playerName",
+          label: "Участник",
           stickyColumn: true,
           sortable: true,
-          sortDirection: 'desc',
+          sortDirection: "desc"
         },
         {
-          key: 'doneCount',
-          label: 'Решено задач',
+          key: "doneCount",
+          label: "Решено задач",
           sortable: true,
-          sortDirection: 'desc',
+          sortDirection: "desc"
         },
         {
-          key: 'diffTime',
-          label: 'Время',
-        },
-      ],
+          key: "diffTime",
+          label: "Время"
+        }
+      ]
     };
-  },
+  }
 };
 </script>
 
