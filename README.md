@@ -12,7 +12,7 @@
 ## Config (Custom Team/Custom Slugs)
 
 - Run your server (https://github.com/aslepenkov/codewars-results-server)
-- Set endpoint: config.js
+- Set endpoint: `config.js`
 
 ```javascript
 module.exports = {
